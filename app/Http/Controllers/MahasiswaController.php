@@ -19,9 +19,8 @@ class MahasiswaController extends Controller
  
     public function save(Request $request){
         $this->validate( $request, [
-            'name' => 'required',
-            'nim' => 'required|unique:mahasiswas|max:9',
-            'address' => 'required',
+            'name' => 'unique:mahasiswas',
+            'nim' => 'unique:mahasiswas|max:9',
         ]);
 
         Mahasiswa::create([
@@ -30,15 +29,18 @@ class MahasiswaController extends Controller
             'address' => $request->input('address')],
         );
  
-        return redirect()->back()->with('flash_message_success', 'Data Successfully added');
+        return redirect()->back()->with('flash_message_success', 'Data successfully added');
     }
  
     public function update(Request $request, $id){
+         $this->validate( $request, [
+            'nim' => 'unique:mahasiswas|max:9',
+        ]);
         $mahasiswa = Mahasiswa::find($id);
         $input = $request->all();
         $mahasiswa->fill($input)->save();
  
-        return redirect('/');
+        return redirect()->back()->with('flash_message_success', 'Data Successfully updated');
     }
  
     public function delete($id)
@@ -46,6 +48,6 @@ class MahasiswaController extends Controller
         $mahasiswas = Mahasiswa::find($id);
         $mahasiswas->delete();
   
-        return redirect('/');
+        return redirect()->back()->with('flash_message_success', 'Data deleted');
     }
 }
