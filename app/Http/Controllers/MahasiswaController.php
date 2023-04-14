@@ -20,7 +20,6 @@ class MahasiswaController extends Controller
     public function save(Request $request){
         $this->validate( $request, [
             'name' => 'unique:mahasiswas',
-            'nim' => 'unique:mahasiswas|max:9',
         ]);
 
         Mahasiswa::create([
